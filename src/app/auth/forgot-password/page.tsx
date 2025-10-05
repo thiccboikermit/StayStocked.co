@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useState } from 'react';
 import { ArrowLeftIcon, CheckIcon } from '@heroicons/react/24/outline';
+import Logo from '../../components/Logo';
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState('');
@@ -26,20 +27,21 @@ export default function ForgotPasswordPage() {
 
   if (isSubmitted) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-md w-full space-y-8">
-          <div className="text-center">
-            <div className="mx-auto h-16 w-16 rounded-full bg-green-100 flex items-center justify-center">
-              <CheckIcon className="h-8 w-8 text-green-600" />
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50 py-12 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-md w-full">
+          <div className="bg-white/80 backdrop-blur-sm p-8 rounded-2xl shadow-2xl border border-green-100">
+            <div className="text-center">
+              <div className="mx-auto h-16 w-16 rounded-full bg-gradient-to-r from-green-500 to-emerald-600 flex items-center justify-center shadow-lg">
+                <CheckIcon className="h-8 w-8 text-white" />
+              </div>
+              <h2 className="mt-6 text-center text-3xl font-extrabold text-green-800">
+                Check your email
+              </h2>
+              <p className="mt-2 text-center text-sm text-green-600">
+                We've sent password reset instructions to{' '}
+                <span className="font-medium text-green-800">{email}</span>
+              </p>
             </div>
-            <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-              Check your email
-            </h2>
-            <p className="mt-2 text-center text-sm text-gray-600">
-              We've sent password reset instructions to{' '}
-              <span className="font-medium text-gray-900">{email}</span>
-            </p>
-          </div>
 
           <div className="bg-blue-50 border border-blue-200 rounded-md p-4">
             <div className="flex">
