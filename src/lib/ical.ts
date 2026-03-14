@@ -81,13 +81,20 @@ function parseICalDate(dateStr: string): Date {
  */
 export async function fetchICalFeed(url: string): Promise<CalendarAvailability> {
   try {
-    const response = await fetch(url);
+    // Proxy through server-side API route to avoid CORS restrictions
+    const response = await fetch('/api/ical', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ url }),
+    });
+
+    const data = await response.json();
+
     if (!response.ok) {
-      throw new Error(`Failed to fetch iCal feed: ${response.statusText}`);
+      throw new Error(data.error || `Failed to fetch iCal feed: ${response.statusText}`);
     }
     
-    const icalContent = await response.text();
-    const bookedDates = parseICalContent(icalContent);
+    const bookedDates = parseICalContent(data.content);
     
     return {
       bookedDates,
