@@ -1,697 +1,337 @@
-'use client';
+// src/app/page.tsx — StayStocked Homepage
 
-import Link from 'next/link';
-import { ArrowRightIcon, MagnifyingGlassIcon } from '@heroicons/react/24/outline';
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import Image from 'next/image';
-import Logo from '../components/Logo';
+import type { Metadata } from 'next'
+import Link from 'next/link'
+
+export const metadata: Metadata = {
+  title: 'StayStocked — Vacation Rentals Stocked Before You Arrive',
+  description: 'Guests order groceries through their host unique link. Local stockers shop and stock the property before check-in. Hosts earn commission on every order.',
+}
 
 export default function HomePage() {
-  const router = useRouter();
-  const [orderLookup, setOrderLookup] = useState('');
-  const [isSearching, setIsSearching] = useState(false);
-
-  const handleOrderSearch = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!orderLookup.trim()) return;
-    
-    setIsSearching(true);
-    // Simple order lookup - in a real app this would validate against a database
-    const trimmedOrderId = orderLookup.trim();
-    
-    // Simulate a brief search delay
-    setTimeout(() => {
-      setIsSearching(false);
-      // Navigate to the order tracking page
-      router.push(`/guest/order/${trimmedOrderId}`);
-    }, 1000);
-  };
-
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-white shadow-sm">
-        <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-2 sm:py-3 lg:py-4">
-            <Link href="/" className="flex items-center space-x-1 sm:space-x-2 lg:space-x-3 hover:opacity-80 transition-opacity flex-shrink-0">
-              <Logo size="lg" className="text-green-600 w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12" />
-              <h1 className="text-base sm:text-lg md:text-xl lg:text-2xl font-bold text-gray-900 font-display">
-                StayStocked
-              </h1>
+    <main className="bg-[#0a160a] text-white overflow-x-hidden">
+
+      {/* ── Nav ── */}
+      <nav className="fixed top-0 left-0 right-0 z-50 border-b border-white/8 bg-[#0a160a]/90 backdrop-blur-md">
+        <div className="max-w-7xl mx-auto px-6 lg:px-10 h-[68px] flex items-center justify-between">
+          <Link href="/" className="flex items-center gap-3">
+            <div className="w-9 h-9 bg-[#3a8a3a] rounded-xl flex items-center justify-center shadow-lg">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
+                <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" stroke="white" strokeWidth="2.5" strokeLinejoin="round"/>
+                <path d="M9 22V12h6v10" stroke="white" strokeWidth="2.5" strokeLinejoin="round"/>
+              </svg>
+            </div>
+            <span className="text-white font-bold text-lg tracking-tight">StayStocked</span>
+          </Link>
+          <div className="hidden md:flex items-center gap-8">
+            {[['/', 'Home'], ['/host', 'For Hosts'], ['/stocker', 'For Stockers'], ['/extension', 'Planner']].map(([href, label]) => (
+              <Link key={href} href={href} className="text-sm text-white/60 hover:text-white transition-colors">{label}</Link>
+            ))}
+          </div>
+          <div className="flex items-center gap-3">
+            <Link href="/auth/signin" className="hidden sm:block text-sm text-white/60 hover:text-white transition-colors">Sign In</Link>
+            <Link href="/host/register" className="bg-[#3a8a3a] text-white text-sm font-semibold px-5 py-2.5 rounded-xl hover:bg-[#4aa04a] transition-colors">
+              Get Started
             </Link>
-            <div className="hidden lg:flex items-center space-x-8">
-              <Link href="/host" className="text-gray-600 hover:text-gray-900 font-medium">
-                For Hosts
+          </div>
+        </div>
+      </nav>
+
+      {/* ── Hero — full viewport, dark green with texture ── */}
+      <section className="relative min-h-screen flex flex-col justify-center pt-[68px]">
+        {/* Subtle grid texture */}
+        <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: 'linear-gradient(#3a8a3a 1px, transparent 1px), linear-gradient(90deg, #3a8a3a 1px, transparent 1px)', backgroundSize: '60px 60px' }} />
+        {/* Radial glow */}
+        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[600px] rounded-full opacity-20" style={{ background: 'radial-gradient(ellipse, #3a8a3a 0%, transparent 70%)' }} />
+
+        <div className="relative max-w-7xl mx-auto px-6 lg:px-10 py-24">
+          <div className="max-w-4xl">
+            <div className="inline-flex items-center gap-2 bg-[#3a8a3a]/20 border border-[#3a8a3a]/40 rounded-full px-4 py-1.5 text-[#7dd87d] text-xs font-bold uppercase tracking-widest mb-10">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#7dd87d] animate-pulse" />
+              Now operating in select markets
+            </div>
+            <h1 className="text-[clamp(42px,7vw,88px)] font-black leading-[0.95] tracking-tight mb-8">
+              Arrive.
+              <br />
+              <span className="text-[#7dd87d]">Relax.</span>
+              <br />
+              StayStocked.
+            </h1>
+            <p className="text-white/60 text-xl leading-relaxed max-w-2xl mb-12">
+              Guests order exactly what they want before arriving. Local stockers shop and stock the property. Hosts earn commission on every order. No friction, no surprises.
+            </p>
+            <div className="flex flex-wrap gap-4">
+              <Link href="/host/register" className="bg-[#3a8a3a] text-white font-bold px-8 py-4 rounded-2xl hover:bg-[#4aa04a] transition-all text-base shadow-xl hover:shadow-[#3a8a3a]/30 hover:shadow-2xl hover:-translate-y-0.5">
+                Register as a Host
               </Link>
-              <Link href="/stocker" className="text-gray-600 hover:text-gray-900 font-medium">
+              <Link href="/stocker" className="border border-white/20 text-white font-semibold px-8 py-4 rounded-2xl hover:border-white/40 hover:bg-white/5 transition-all text-base">
                 Become a Stocker
               </Link>
-              <Link
-                href="/auth/signin"
-                className="text-gray-600 hover:text-gray-900 font-medium"
-              >
-                Sign In
-              </Link>
-              <Link
-                href="/host/register"
-                className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg font-medium transition-colors"
-              >
-                Get Started
-              </Link>
-            </div>
-            {/* Tablet and Mobile menu */}
-            <div className="lg:hidden flex items-center space-x-1 sm:space-x-2">
-              <Link
-                href="/auth/signin"
-                className="hidden sm:block text-gray-600 hover:text-gray-900 font-medium text-xs sm:text-sm"
-              >
-                Sign In
-              </Link>
-              <Link
-                href="/host/register"
-                className="bg-green-600 hover:bg-green-700 text-white px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg font-medium transition-colors text-xs sm:text-sm"
-              >
-                Start
-              </Link>
             </div>
           </div>
-        </div>
-      </header>
 
-      {/* Hero Section */}
-      <section className="relative bg-gray-50 py-12 sm:py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
-            <div className="order-2 lg:order-1 text-center lg:text-left">
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight font-display">
-                <span className="block">Arrive. Relax.</span>
-                <span className="text-green-600">StayStocked.</span>
-              </h1>
-              <p className="mt-6 text-lg lg:text-xl text-gray-600 leading-relaxed max-w-2xl mx-auto lg:mx-0">
-                <span className="text-green-600 font-semibold">Connect your rental</span>, let guests order what they need, and StayStocked ensures every stay starts ready to enjoy.
-              </p>
-              <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-                <Link
-                  href="/host/register"
-                  className="inline-flex items-center justify-center bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors"
-                >
-                  Register as Host
-                  <ArrowRightIcon className="ml-2 h-4 w-4" />
-                </Link>
-                <Link
-                  href="/demo"
-                  className="inline-flex items-center justify-center border border-gray-300 hover:border-green-500 text-gray-700 hover:text-green-600 px-6 py-3 rounded-lg font-semibold transition-colors bg-white"
-                >
-                  Explore Demo
-                </Link>
+          {/* Stats floating cards */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-20">
+            {[
+              { val: '2 min', label: 'Host setup time' },
+              { val: '$30-40', label: 'Stocker base pay' },
+              { val: '20-30%', label: 'Service fee' },
+              { val: '100%', label: 'Photo verified' },
+            ].map(({ val, label }) => (
+              <div key={label} className="bg-white/5 border border-white/10 rounded-2xl p-5 backdrop-blur-sm">
+                <div className="text-2xl font-black text-[#7dd87d] mb-1">{val}</div>
+                <div className="text-white/50 text-sm">{label}</div>
               </div>
-            </div>
-            
-            <div className="order-1 lg:order-2 relative">
-              <div className="bg-white rounded-2xl shadow-2xl overflow-hidden mx-auto max-w-sm lg:max-w-none">
-                {/* Kitchen Image */}
-                <div className="h-64 lg:h-96 relative overflow-hidden">
-                  <Image
-                    src="/images/kitchen.jpg"
-                    alt="Kitchen counter with fresh groceries, vegetables, fruits and cooking ingredients ready for guests"
-                    fill
-                    className="object-cover"
-                    priority
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 40vw"
-                  />
-                </div>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* Guest Order Tracking */}
-      <section className="py-16 bg-white border-t border-gray-200">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-8">
-            <h2 className="text-2xl lg:text-3xl font-bold text-gray-900 font-display mb-3">
-              Track Your Order
+      {/* ── How it actually works ── */}
+      <section className="bg-[#0f1f0f] py-28">
+        <div className="max-w-7xl mx-auto px-6 lg:px-10">
+          <div className="mb-16">
+            <p className="text-[#7dd87d] text-xs font-bold uppercase tracking-widest mb-4">How it works</p>
+            <h2 className="text-5xl font-black tracking-tight leading-tight">
+              Three parties.<br/>One seamless flow.
             </h2>
-            <p className="text-gray-600">
-              Already placed a grocery order? Enter your order ID to track your delivery status
-            </p>
-          </div>
-          
-          <div className="max-w-md mx-auto">
-            <form onSubmit={handleOrderSearch} className="space-y-4">
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                  <MagnifyingGlassIcon className="h-5 w-5 text-gray-400" />
-                </div>
-                <input
-                  type="text"
-                  value={orderLookup}
-                  onChange={(e) => setOrderLookup(e.target.value)}
-                  placeholder="Enter your order ID (e.g., order-abc123)"
-                  className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 text-gray-900 placeholder-gray-500"
-                  required
-                />
-              </div>
-              <button
-                type="submit"
-                disabled={isSearching || !orderLookup.trim()}
-                className="w-full bg-green-600 hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed text-white py-3 px-4 rounded-lg font-medium transition-colors flex items-center justify-center"
-              >
-                {isSearching ? (
-                  <>
-                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
-                    Searching...
-                  </>
-                ) : (
-                  'Track Order'
-                )}
-              </button>
-            </form>
-            
-            <div className="mt-6 text-center">
-              <p className="text-sm text-gray-500">
-                Can&apos;t find your order ID? Check your email confirmation or contact your host.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* How It Works */}
-      <section id="how-it-works" className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 font-display mb-4">
-              How It Works
-            </h2>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              A seamless three-step process connecting hosts, guests, and local stockers
-            </p>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <div className="text-center group">
-              <div className="mx-auto w-20 h-20 bg-green-600 rounded-full flex items-center justify-center transition-all duration-300 group-hover:bg-green-700 group-hover:scale-110 group-hover:rotate-6">
-                <span className="text-2xl font-bold text-white">01</span>
-              </div>
-              <div className="mt-6 bg-green-50 rounded-xl p-6 transition-all duration-300 group-hover:bg-green-100 group-hover:shadow-lg group-hover:-translate-y-2">
-                <div className="w-16 h-16 mx-auto bg-green-100 rounded-lg flex items-center justify-center mb-4 transition-all duration-300 group-hover:bg-green-200 group-hover:scale-110">
-                  <Logo size="md" className="text-green-600 transition-colors duration-300 group-hover:text-emerald-600" />
-                </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-2 transition-colors duration-300 group-hover:text-green-800">Hosts Register</h3>
-                <p className="text-gray-600 transition-colors duration-300 group-hover:text-gray-700">
-                  Add your property, sync your 
-                  Airbnb calendar, and generate a 
-                  unique guest shopping link.
-                </p>
-              </div>
-            </div>
-
-            <div className="text-center group">
-              <div className="mx-auto w-20 h-20 bg-emerald-600 rounded-full flex items-center justify-center transition-all duration-300 group-hover:bg-emerald-700 group-hover:scale-110 group-hover:-rotate-6">
-                <span className="text-2xl font-bold text-white">02</span>
-              </div>
-              <div className="mt-6 bg-green-50 rounded-xl p-6 transition-all duration-300 group-hover:bg-green-100 group-hover:shadow-lg group-hover:-translate-y-2">
-                <div className="w-16 h-16 mx-auto bg-green-100 rounded-lg flex items-center justify-center mb-4 transition-all duration-300 group-hover:bg-green-200 group-hover:scale-110">
-                  <svg className="w-8 h-8 text-green-600 transition-all duration-300 group-hover:text-emerald-600 group-hover:rotate-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-1.1 5.4a1 1 0 00.9 1.1H19" />
-                  </svg>
-                </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-2 transition-colors duration-300 group-hover:text-green-800">Guests Shop</h3>
-                <p className="text-gray-600 transition-colors duration-300 group-hover:text-gray-700">
-                  Use AI meal planning to create 
-                  personalized grocery lists. Order 
-                  with one click.
-                </p>
-              </div>
-            </div>
-
-            <div className="text-center group">
-              <div className="mx-auto w-20 h-20 bg-teal-600 rounded-full flex items-center justify-center transition-all duration-300 group-hover:bg-teal-700 group-hover:scale-110 group-hover:rotate-6">
-                <span className="text-2xl font-bold text-white">03</span>
-              </div>
-              <div className="mt-6 bg-green-50 rounded-xl p-6 transition-all duration-300 group-hover:bg-green-100 group-hover:shadow-lg group-hover:-translate-y-2">
-                <div className="w-16 h-16 mx-auto bg-green-100 rounded-lg flex items-center justify-center mb-4 transition-all duration-300 group-hover:bg-green-200 group-hover:scale-110">
-                  <svg className="w-8 h-8 text-green-600 transition-all duration-300 group-hover:text-emerald-600 group-hover:rotate-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
-                  </svg>
-                </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-2 transition-colors duration-300 group-hover:text-green-800">Stockers Deliver</h3>
-                <p className="text-gray-600 transition-colors duration-300 group-hover:text-gray-700">
-                  Local shoppers fulfill orders, 
-                  stock the property, and earn 
-                  money on flexible schedules.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Features Section */}
-      <section className="py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 font-display mb-4">
-              Why Choose StayStocked?
-            </h2>
-            <p className="text-lg text-gray-600 max-w-4xl mx-auto">
-              We&apos;ve designed every aspect of our platform to make grocery stocking seamless for hosts, convenient for guests, and profitable for stockers.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {/* Smart Integration */}
-            <div className="bg-white rounded-xl p-8 shadow-sm border border-gray-200 hover:shadow-lg transition-all duration-300 group">
-              <div className="w-16 h-16 bg-green-100 rounded-xl flex items-center justify-center mb-6 group-hover:bg-green-200 transition-colors duration-300">
-                <svg className="w-8 h-8 text-green-600 group-hover:scale-110 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
-                </svg>
-              </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-3 font-display">Smart Calendar Integration</h3>
-              <p className="text-gray-600 leading-relaxed">
-                Automatically sync with your Airbnb, VRBO, or booking platform. Orders are only placed when guests have confirmed bookings, eliminating waste and ensuring fresh groceries.
+          <div className="grid lg:grid-cols-3 gap-6">
+            {/* Host */}
+            <div className="bg-[#162016] border border-[#3a8a3a]/30 rounded-3xl p-8 relative overflow-hidden group hover:border-[#3a8a3a]/60 transition-colors">
+              <div className="absolute top-0 right-0 w-48 h-48 opacity-5 rounded-full bg-[#3a8a3a] blur-3xl" />
+              <div className="text-5xl font-black text-[#3a8a3a]/30 mb-6">01</div>
+              <div className="text-[#7dd87d] text-xs font-bold uppercase tracking-widest mb-3">Host</div>
+              <h3 className="text-2xl font-bold mb-4">Register and connect your calendar</h3>
+              <p className="text-white/50 leading-relaxed mb-6">
+                Create your property, paste in your Airbnb or VRBO iCal link, and StayStocked syncs your bookings automatically. Set your delivery windows and preferences. Share the unique guest shopping link — that is all it takes.
               </p>
+              <div className="bg-[#0f1f0f] rounded-2xl p-4 border border-white/5">
+                <div className="text-white/30 text-xs mb-2 uppercase tracking-wider">Your guest link</div>
+                <div className="font-mono text-[#7dd87d] text-sm">staystocked.co/shop/lakeside-retreat</div>
+              </div>
+              <Link href="/host" className="inline-flex items-center gap-2 text-[#7dd87d] text-sm font-semibold mt-6 hover:gap-3 transition-all">
+                For Hosts <span>→</span>
+              </Link>
             </div>
 
-            {/* AI Meal Planning */}
-            <div className="bg-white rounded-xl p-8 shadow-sm border border-gray-200 hover:shadow-lg transition-all duration-300 group">
-              <div className="w-16 h-16 bg-green-100 rounded-xl flex items-center justify-center mb-6 group-hover:bg-green-200 transition-colors duration-300">
-                <svg className="w-8 h-8 text-green-600 group-hover:scale-110 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
-                </svg>
-              </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-3 font-display">AI-Powered Meal Planning</h3>
-              <p className="text-gray-600">
-                Guests receive personalized grocery suggestions based on their group size, dietary preferences, and length of stay. Our AI creates smart shopping lists that eliminate guesswork.
+            {/* Guest */}
+            <div className="bg-[#162016] border border-[#3a8a3a]/30 rounded-3xl p-8 relative overflow-hidden group hover:border-[#3a8a3a]/60 transition-colors">
+              <div className="absolute top-0 right-0 w-48 h-48 opacity-5 rounded-full bg-[#7dd87d] blur-3xl" />
+              <div className="text-5xl font-black text-[#3a8a3a]/30 mb-6">02</div>
+              <div className="text-[#7dd87d] text-xs font-bold uppercase tracking-widest mb-3">Guest</div>
+              <h3 className="text-2xl font-bold mb-4">Order through the host link</h3>
+              <p className="text-white/50 leading-relaxed mb-6">
+                Guests use the unique link from their host to open a personalized shopping interface. They browse by category or use the AI meal planner — entering group size, nights, meals, and preferences to generate an optimized grocery list. Approve the cart and check out.
               </p>
-            </div>
-
-            {/* Local Network */}
-            <div className="bg-white rounded-xl p-8 shadow-sm border border-gray-200 hover:shadow-lg transition-all duration-300 group">
-              <div className="w-16 h-16 bg-emerald-100 rounded-xl flex items-center justify-center mb-6 group-hover:bg-emerald-200 transition-colors duration-300">
-                <svg className="w-8 h-8 text-emerald-600 group-hover:scale-110 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                </svg>
-              </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-3 font-display">Trusted Local Stockers</h3>
-              <p className="text-gray-600">
-                Our vetted network of local shoppers knows the best stores, freshest products, and fastest routes. Each stocker is background-checked and rated by the community.
-              </p>
-            </div>
-
-            {/* Quality Guarantee */}
-            <div className="bg-white rounded-xl p-8 shadow-sm border border-gray-200 hover:shadow-lg transition-all duration-300 group">
-              <div className="w-16 h-16 bg-green-100 rounded-xl flex items-center justify-center mb-6 group-hover:bg-green-200 transition-colors duration-300">
-                <svg className="w-8 h-8 text-green-600 group-hover:scale-110 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                </svg>
-              </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-3 font-display">Quality Guarantee</h3>
-              <p className="text-gray-600">
-                Every order includes photo verification, freshness guarantee, and 24/7 support. If something isn&apos;t perfect, we&apos;ll make it right immediately.
-              </p>
-            </div>
-
-            {/* Flexible Pricing */}
-            <div className="bg-white rounded-xl p-8 shadow-sm border border-gray-200 hover:shadow-lg transition-all duration-300 group">
-              <div className="w-16 h-16 bg-teal-100 rounded-xl flex items-center justify-center mb-6 group-hover:bg-teal-200 transition-colors duration-300">
-                <svg className="w-8 h-8 text-teal-600 group-hover:scale-110 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-3 font-display">Transparent Pricing</h3>
-              <p className="text-gray-600">
-                No hidden fees or surprise charges. Guests pay grocery cost plus a small service fee. Hosts earn commission on each order. Stockers keep 100% of their delivery fee.
-              </p>
-            </div>
-
-            {/* Real-Time Tracking */}
-            <div className="bg-white rounded-xl p-8 shadow-sm border border-gray-200 hover:shadow-lg transition-all duration-300 group">
-              <div className="w-16 h-16 bg-green-100 rounded-xl flex items-center justify-center mb-6 group-hover:bg-green-200 transition-colors duration-300">
-                <svg className="w-8 h-8 text-green-600 group-hover:scale-110 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-3 font-display">Real-Time Updates</h3>
-              <p className="text-gray-600">
-                Track your order from shopping to delivery. Receive notifications when your stocker starts shopping, when they&apos;re en route, and when groceries are safely stored.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Detailed Process Section */}
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 font-display mb-4">
-              The Complete Process
-            </h2>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              From setup to guest arrival, here&apos;s exactly how StayStocked works to create the perfect stocking experience.
-            </p>
-          </div>
-
-          <div className="space-y-16">
-            {/* Step 1 - Detailed */}
-            <div className="flex flex-col lg:flex-row items-center gap-12">
-              <div className="lg:w-1/2">
-                <div className="inline-flex items-center justify-center w-16 h-16 bg-green-600 rounded-full mb-6">
-                  <span className="text-2xl font-bold text-white">1</span>
-                </div>
-                <h3 className="text-2xl font-bold text-gray-900 mb-4 font-display">Host Registration & Setup</h3>
-                <div className="space-y-4 text-gray-600">
-                  <p className="flex items-start">
-                    <span className="inline-block w-2 h-2 bg-green-600 rounded-full mt-2 mr-3 flex-shrink-0"></span>
-                    Connect your Airbnb, VRBO, or direct booking calendar in under 2 minutes
-                  </p>
-                  <p className="flex items-start">
-                    <span className="inline-block w-2 h-2 bg-green-600 rounded-full mt-2 mr-3 flex-shrink-0"></span>
-                    Add property details: address, access instructions, kitchen amenities
-                  </p>
-                  <p className="flex items-start">
-                    <span className="inline-block w-2 h-2 bg-green-600 rounded-full mt-2 mr-3 flex-shrink-0"></span>
-                    Generate your unique guest shopping link automatically
-                  </p>
-                  <p className="flex items-start">
-                    <span className="inline-block w-2 h-2 bg-green-600 rounded-full mt-2 mr-3 flex-shrink-0"></span>
-                    Set your preferences: local stores, delivery windows, special instructions
-                  </p>
-                </div>
-              </div>
-              <div className="lg:w-1/2">
-                <div className="bg-gray-50 rounded-2xl p-8 border border-gray-200">
-                  <div className="bg-white rounded-lg p-4 mb-4 border">
-                    <div className="flex items-center space-x-3 mb-3">
-                      <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
-                        <svg className="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                        </svg>
-                      </div>
-                      <span className="font-semibold text-gray-900">Calendar Synced</span>
-                    </div>
-                    <p className="text-sm text-gray-600">Connected to Airbnb • 3 upcoming bookings</p>
+              <div className="bg-[#0f1f0f] rounded-2xl p-4 border border-white/5 space-y-2">
+                {[['Eggs, dozen', '$6.99'], ['Chicken breasts, 2lb', '$12.99'], ['Baby spinach', '$4.49']].map(([item, price]) => (
+                  <div key={item} className="flex justify-between text-sm">
+                    <span className="text-white/60">{item}</span>
+                    <span className="text-white/40">{price}</span>
                   </div>
-                  <div className="bg-white rounded-lg p-4 border">
-                    <p className="font-semibold text-gray-900 mb-2">Your Guest Link:</p>
-                    <div className="bg-gray-50 rounded p-2 text-sm text-gray-600 font-mono break-all">
-                      staystocked.com/shop/lakeside-retreat-abc123
+                ))}
+                <div className="border-t border-white/10 pt-2 flex justify-between text-sm font-semibold">
+                  <span className="text-white">Total + fee</span>
+                  <span className="text-[#7dd87d]">$30.17</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Stocker */}
+            <div className="bg-[#162016] border border-[#3a8a3a]/30 rounded-3xl p-8 relative overflow-hidden group hover:border-[#3a8a3a]/60 transition-colors">
+              <div className="absolute top-0 right-0 w-48 h-48 opacity-5 rounded-full bg-[#3a8a3a] blur-3xl" />
+              <div className="text-5xl font-black text-[#3a8a3a]/30 mb-6">03</div>
+              <div className="text-[#7dd87d] text-xs font-bold uppercase tracking-widest mb-3">Stocker</div>
+              <h3 className="text-2xl font-bold mb-4">Shop, deliver, and stock</h3>
+              <p className="text-white/50 leading-relaxed mb-6">
+                Stockers pick up orders from the dashboard, shop with a company-issued card, and stock the property within the scheduled delivery window — always after cleaning, before check-in. Upload photo proof. Earn $30-40 base plus distance bonuses.
+              </p>
+              <div className="bg-[#0f1f0f] rounded-2xl p-4 border border-white/5 space-y-1.5">
+                {[['Base pay', '$35.00'], ['Distance (3 miles)', '$0.00'], ['Order total earned', '$35.00']].map(([label, val]) => (
+                  <div key={label} className="flex justify-between text-sm">
+                    <span className="text-white/50">{label}</span>
+                    <span className="text-[#7dd87d] font-semibold">{val}</span>
+                  </div>
+                ))}
+              </div>
+              <Link href="/stocker" className="inline-flex items-center gap-2 text-[#7dd87d] text-sm font-semibold mt-6 hover:gap-3 transition-all">
+                For Stockers <span>→</span>
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── iCal integration callout ── */}
+      <section className="bg-[#0a160a] py-20">
+        <div className="max-w-7xl mx-auto px-6 lg:px-10">
+          <div className="bg-[#162016] border border-[#3a8a3a]/20 rounded-3xl p-10 lg:p-16 flex flex-col lg:flex-row gap-12 items-center">
+            <div className="flex-1">
+              <div className="w-14 h-14 bg-[#3a8a3a]/20 rounded-2xl flex items-center justify-center mb-6">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
+                  <rect x="3" y="4" width="18" height="18" rx="2" stroke="#7dd87d" strokeWidth="2"/>
+                  <path d="M16 2v4M8 2v4M3 10h18" stroke="#7dd87d" strokeWidth="2" strokeLinecap="round"/>
+                </svg>
+              </div>
+              <h2 className="text-4xl font-black mb-4 tracking-tight">Works with Airbnb and VRBO — no API needed</h2>
+              <p className="text-white/50 text-lg leading-relaxed">
+                Paste your iCal URL from Airbnb or VRBO. StayStocked syncs your bookings every 2 hours — check-in dates, check-out times, and booking changes update automatically. Platform-agnostic and instant to set up.
+              </p>
+            </div>
+            <div className="flex-shrink-0 bg-[#0a160a] rounded-2xl border border-white/10 p-6 w-full lg:w-80">
+              <div className="text-white/30 text-xs uppercase tracking-wider mb-3">iCal sync status</div>
+              <div className="flex items-center gap-2 mb-4">
+                <span className="w-2 h-2 rounded-full bg-[#7dd87d] animate-pulse" />
+                <span className="text-[#7dd87d] text-sm font-semibold">Synced 14 minutes ago</span>
+              </div>
+              {[
+                { label: 'Airbnb', bookings: '3 upcoming', status: 'Connected' },
+                { label: 'VRBO', bookings: '1 upcoming', status: 'Connected' },
+              ].map(({ label, bookings, status }) => (
+                <div key={label} className="flex items-center justify-between py-3 border-b border-white/5 last:border-0">
+                  <div>
+                    <div className="text-white text-sm font-medium">{label}</div>
+                    <div className="text-white/40 text-xs">{bookings}</div>
+                  </div>
+                  <span className="text-[#7dd87d] text-xs font-semibold">{status}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── Pricing section ── */}
+      <section className="bg-[#0f1f0f] py-28">
+        <div className="max-w-7xl mx-auto px-6 lg:px-10">
+          <div className="mb-16">
+            <p className="text-[#7dd87d] text-xs font-bold uppercase tracking-widest mb-4">Pricing</p>
+            <h2 className="text-5xl font-black tracking-tight leading-tight mb-4">Transparent. No surprises.</h2>
+            <p className="text-white/50 text-lg max-w-2xl">
+              Guests pay grocery cost plus a service fee. Stockers earn a competitive base plus distance compensation. No hidden charges.
+            </p>
+          </div>
+          <div className="grid md:grid-cols-3 gap-6 mb-12">
+            {[
+              { title: 'Essentials run', grocery: '$100', fee: '$25-30', stocker: '$30', total: '$125-130', miles: '2 miles' },
+              { title: 'Family stay', grocery: '$300', fee: '$75', stocker: '$35', total: '$375', miles: '4 miles', featured: true },
+              { title: 'Large group', grocery: '$500', fee: '$125', stocker: '$40', total: '$625', miles: '3 miles' },
+            ].map(({ title, grocery, fee, stocker, total, miles, featured }) => (
+              <div key={title} className={`rounded-3xl p-8 border ${featured ? 'bg-[#3a8a3a] border-[#4aa04a]' : 'bg-[#162016] border-[#3a8a3a]/20'}`}>
+                {featured && <div className="text-[#0a160a] text-xs font-black uppercase tracking-widest mb-4">Most common</div>}
+                <div className={`text-lg font-bold mb-6 ${featured ? 'text-white' : 'text-white/80'}`}>{title}</div>
+                <div className="space-y-3">
+                  {[['Grocery cost', grocery], ['Service fee (25%)', fee], ['Stocker pays', stocker], ['Distance', miles]].map(([label, val]) => (
+                    <div key={label} className="flex justify-between text-sm">
+                      <span className={featured ? 'text-white/70' : 'text-white/40'}>{label}</span>
+                      <span className={featured ? 'text-white font-medium' : 'text-white/70'}>{val}</span>
                     </div>
+                  ))}
+                  <div className={`border-t pt-3 flex justify-between font-bold text-base ${featured ? 'border-white/20 text-white' : 'border-white/10 text-[#7dd87d]'}`}>
+                    <span>Guest total</span>
+                    <span>{total}</span>
                   </div>
                 </div>
               </div>
-            </div>
+            ))}
+          </div>
+          <p className="text-white/30 text-sm text-center">
+            Distance beyond 5 miles adds $0.50-$1.00/mile to stocker pay, passed through transparently.
+          </p>
+        </div>
+      </section>
 
-            {/* Step 2 - Detailed */}
-            <div className="flex flex-col lg:flex-row-reverse items-center gap-12">
-              <div className="lg:w-1/2">
-                <div className="inline-flex items-center justify-center w-16 h-16 bg-emerald-600 rounded-full mb-6">
-                  <span className="text-2xl font-bold text-white">2</span>
+      {/* ── Why StayStocked ── */}
+      <section className="bg-[#0a160a] py-28">
+        <div className="max-w-7xl mx-auto px-6 lg:px-10">
+          <div className="mb-16">
+            <p className="text-[#7dd87d] text-xs font-bold uppercase tracking-widest mb-4">Why it works</p>
+            <h2 className="text-5xl font-black tracking-tight leading-tight">Built for all three sides.</h2>
+          </div>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+            {[
+              { who: 'Hosts', icon: '🏠', title: 'Better guest experience', body: 'Guests who arrive to a stocked kitchen leave better reviews and book again. No extra work required from the host.' },
+              { who: 'Guests', icon: '🛁', title: 'Arrive and relax', body: 'No grocery run after a long flight. Everything is stocked exactly how you ordered it — verified by photo before you check in.' },
+              { who: 'Stockers', icon: '💼', title: 'Competitive, transparent pay', body: '$30-40 base per order, distance bonuses, complexity bonuses for large orders. Company card covers all purchases — no out-of-pocket.' },
+              { who: 'Hosts', icon: '📅', title: 'Zero setup friction', body: 'iCal sync means your booking calendar stays live automatically. No manual updates, no API approval processes.' },
+              { who: 'Guests', icon: '🤖', title: 'AI meal planning', body: 'Not sure what to order? The AI planner builds a full meal plan and grocery list based on your group size, nights, and preferences.' },
+              { who: 'Stockers', icon: '🧾', title: 'Clear delivery windows', body: 'Orders are only scheduled after the cleaning crew finishes and before guest check-in. No guesswork on timing.' },
+            ].map(({ who, icon, title, body }) => (
+              <div key={title} className="bg-[#162016] border border-white/5 rounded-2xl p-7 hover:border-[#3a8a3a]/30 transition-colors">
+                <div className="flex items-center gap-3 mb-4">
+                  <span className="text-2xl">{icon}</span>
+                  <span className="text-[#7dd87d]/60 text-xs font-bold uppercase tracking-wider">{who}</span>
                 </div>
-                <h3 className="text-2xl font-bold text-gray-900 mb-4 font-display">Guest Experience</h3>
-                <div className="space-y-4 text-gray-600">
-                  <p className="flex items-start">
-                    <span className="inline-block w-2 h-2 bg-gray-900 rounded-full mt-2 mr-3 flex-shrink-0"></span>
-                    Guests receive your unique link 7-14 days before arrival
-                  </p>
-                  <p className="flex items-start">
-                    <span className="inline-block w-2 h-2 bg-gray-900 rounded-full mt-2 mr-3 flex-shrink-0"></span>
-                    AI suggests groceries based on group size, dietary needs, and stay duration
-                  </p>
-                  <p className="flex items-start">
-                    <span className="inline-block w-2 h-2 bg-gray-900 rounded-full mt-2 mr-3 flex-shrink-0"></span>
-                    One-click ordering with transparent pricing and delivery timeline
-                  </p>
-                  <p className="flex items-start">
-                    <span className="inline-block w-2 h-2 bg-gray-900 rounded-full mt-2 mr-3 flex-shrink-0"></span>
-                    Optional: Add special requests or dietary restrictions
-                  </p>
-                </div>
+                <h3 className="text-base font-bold text-white mb-2">{title}</h3>
+                <p className="text-white/40 text-sm leading-relaxed">{body}</p>
               </div>
-              <div className="lg:w-1/2">
-                <div className="bg-gray-50 rounded-2xl p-8 border border-gray-200">
-                  <div className="bg-white rounded-lg p-4 mb-4 border">
-                    <h4 className="font-semibold text-gray-900 mb-3">AI Suggestions for Your Stay:</h4>
-                    <div className="space-y-2">
-                      <div className="flex justify-between items-center p-2 bg-gray-50 rounded text-sm">
-                        <span className="text-gray-900">🥛 Organic Milk (1/2 gal)</span>
-                        <span className="text-green-600 font-medium">$4.99</span>
-                      </div>
-                      <div className="flex justify-between items-center p-2 bg-gray-50 rounded text-sm">
-                        <span className="text-gray-900">🥖 Fresh Bread</span>
-                        <span className="text-green-600 font-medium">$3.49</span>
-                      </div>
-                      <div className="flex justify-between items-center p-2 bg-gray-50 rounded text-sm">
-                        <span className="text-gray-900">🥚 Farm Eggs (Dozen)</span>
-                        <span className="text-green-600 font-medium">$5.99</span>
-                      </div>
-                    </div>
-                    <div className="mt-4 pt-4 border-t">
-                      <div className="flex justify-between font-semibold">
-                        <span className="text-gray-900">Total + Service Fee:</span>
-                        <span className="text-green-600">$18.47</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Step 3 - Detailed */}
-            <div className="flex flex-col lg:flex-row items-center gap-12">
-              <div className="lg:w-1/2">
-                <div className="inline-flex items-center justify-center w-16 h-16 bg-teal-600 rounded-full mb-6">
-                  <span className="text-2xl font-bold text-white">3</span>
-                </div>
-                <h3 className="text-2xl font-bold text-gray-900 mb-4 font-display">Professional Stocking</h3>
-                <div className="space-y-4 text-gray-600">
-                  <p className="flex items-start">
-                    <span className="inline-block w-2 h-2 bg-gray-900 rounded-full mt-2 mr-3 flex-shrink-0"></span>
-                    Vetted local stockers receive order notifications instantly
-                  </p>
-                  <p className="flex items-start">
-                    <span className="inline-block w-2 h-2 bg-gray-900 rounded-full mt-2 mr-3 flex-shrink-0"></span>
-                    Professional shopping with photo verification of each item
-                  </p>
-                  <p className="flex items-start">
-                    <span className="inline-block w-2 h-2 bg-gray-900 rounded-full mt-2 mr-3 flex-shrink-0"></span>
-                    Contactless delivery and proper food storage according to your instructions
-                  </p>
-                  <p className="flex items-start">
-                    <span className="inline-block w-2 h-2 bg-gray-900 rounded-full mt-2 mr-3 flex-shrink-0"></span>
-                    Real-time updates and completion photos sent to all parties
-                  </p>
-                </div>
-              </div>
-              <div className="lg:w-1/2">
-                <div className="bg-gray-50 rounded-2xl p-8 border border-gray-200">
-                  <div className="space-y-4">
-                    <div className="bg-white rounded-lg p-4 border border-green-200">
-                      <div className="flex items-center space-x-3 mb-2">
-                        <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
-                          <svg className="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8" />
-                          </svg>
-                        </div>
-                        <span className="font-semibold text-gray-900">Order Accepted</span>
-                      </div>
-                      <p className="text-sm text-gray-600">Sarah M. is shopping for your order</p>
-                    </div>
-                    <div className="bg-white rounded-lg p-4 border border-blue-200">
-                      <div className="flex items-center space-x-3 mb-2">
-                        <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
-                          <svg className="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4" />
-                          </svg>
-                        </div>
-                        <span className="font-semibold text-gray-900">Shopping in Progress</span>
-                      </div>
-                      <p className="text-sm text-gray-600">ETA: 30 minutes to your property</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* Footer */}
-      {/* Footer */}
-      <footer className="bg-gray-900 text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {/* Company Info */}
-            <div className="md:col-span-2 lg:col-span-1">
-              <Link href="/" className="flex items-center space-x-3 mb-6 hover:opacity-80 transition-opacity">
-                <Logo size="lg" className="text-green-400 w-12 h-12" />
-                <h3 className="text-2xl font-bold text-white font-display">
-                  StayStocked
-                </h3>
-              </Link>
-              <p className="text-gray-400 mb-6 leading-relaxed">
-                The smart way to pre-stock vacation rentals with groceries and essentials. Seamless for hosts, convenient for guests, profitable for stockers.
-              </p>
-              <div className="flex space-x-4">
-                <a href="#" className="text-gray-400 hover:text-green-400 transition-colors">
-                  <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
-                  </svg>
-                </a>
-                <a href="#" className="text-gray-400 hover:text-green-400 transition-colors">
-                  <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z" />
-                  </svg>
-                </a>
-                <a href="#" className="text-gray-400 hover:text-green-400 transition-colors">
-                  <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
-                  </svg>
-                </a>
-              </div>
-            </div>
+      {/* ── CTA ── */}
+      <section className="bg-[#3a8a3a] py-24 text-center relative overflow-hidden">
+        <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(circle at 20% 50%, white 1px, transparent 1px), radial-gradient(circle at 80% 50%, white 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
+        <div className="relative max-w-3xl mx-auto px-6">
+          <h2 className="text-5xl font-black text-white mb-5 tracking-tight">Ready to get started?</h2>
+          <p className="text-white/70 text-xl mb-10">Two minutes to set up. Your first guest order could come in today.</p>
+          <div className="flex flex-wrap gap-4 justify-center">
+            <Link href="/host/register" className="bg-white text-[#1a4a1a] font-black px-8 py-4 rounded-2xl hover:bg-white/90 transition-colors text-base">
+              Register as a Host
+            </Link>
+            <Link href="/stocker" className="border-2 border-white/40 text-white font-bold px-8 py-4 rounded-2xl hover:border-white hover:bg-white/10 transition-all text-base">
+              Become a Stocker
+            </Link>
+          </div>
+        </div>
+      </section>
 
-            {/* For Hosts */}
+      {/* ── Footer ── */}
+      <footer className="bg-[#060e06] pt-16 pb-8">
+        <div className="max-w-7xl mx-auto px-6 lg:px-10">
+          <div className="grid md:grid-cols-4 gap-10 pb-12 border-b border-white/8">
             <div>
-              <h4 className="font-bold text-white mb-6 font-display">For Hosts</h4>
-              <ul className="space-y-4">
-                <li>
-                  <Link href="/host/register" className="text-gray-400 hover:text-green-400 transition-colors">
-                    Get Started
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/host" className="text-gray-400 hover:text-green-400 transition-colors">
-                    Host Dashboard
-                  </Link>
-                </li>
-                <li>
-                  <Link href="#how-it-works" className="text-gray-400 hover:text-green-400 transition-colors">
-                    How It Works
-                  </Link>
-                </li>
-                <li>
-                  <a href="#" className="text-gray-400 hover:text-green-400 transition-colors">
-                    Pricing
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="text-gray-400 hover:text-green-400 transition-colors">
-                    Success Stories
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="text-gray-400 hover:text-green-400 transition-colors">
-                    Resources
-                  </a>
-                </li>
-              </ul>
+              <Link href="/" className="flex items-center gap-2.5 mb-4">
+                <div className="w-8 h-8 bg-[#3a8a3a] rounded-lg flex items-center justify-center">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" stroke="white" strokeWidth="2.5" strokeLinejoin="round"/>
+                    <path d="M9 22V12h6v10" stroke="white" strokeWidth="2.5" strokeLinejoin="round"/>
+                  </svg>
+                </div>
+                <span className="text-white font-bold">StayStocked</span>
+              </Link>
+              <p className="text-white/30 text-sm leading-relaxed">Vacation rentals stocked and ready before guests arrive.</p>
             </div>
-
-            {/* For Stockers */}
-            <div>
-              <h4 className="font-bold text-white mb-6 font-display">For Stockers</h4>
-              <ul className="space-y-4">
-                <li>
-                  <Link href="/stocker" className="text-gray-400 hover:text-green-400 transition-colors">
-                    Join as Stocker
-                  </Link>
-                </li>
-                <li>
-                  <a href="#" className="text-gray-400 hover:text-green-400 transition-colors">
-                    Stocker Requirements
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="text-gray-400 hover:text-green-400 transition-colors">
-                    Earnings Calculator
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="text-gray-400 hover:text-green-400 transition-colors">
-                    Training Center
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="text-gray-400 hover:text-green-400 transition-colors">
-                    Stocker Support
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="text-gray-400 hover:text-green-400 transition-colors">
-                    Community Forum
-                  </a>
-                </li>
-              </ul>
-            </div>
-
-            {/* Company & Support */}
-            <div>
-              <h4 className="font-bold text-white mb-6 font-display">Company</h4>
-              <ul className="space-y-4">
-                <li>
-                  <a href="#" className="text-gray-400 hover:text-green-400 transition-colors">
-                    About Us
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="text-gray-400 hover:text-green-400 transition-colors">
-                    Contact
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="text-gray-400 hover:text-green-400 transition-colors">
-                    Help Center
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="text-gray-400 hover:text-green-400 transition-colors">
-                    Safety & Trust
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="text-gray-400 hover:text-green-400 transition-colors">
-                    Privacy Policy
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="text-gray-400 hover:text-green-400 transition-colors">
-                    Terms of Service
-                  </a>
-                </li>
-              </ul>
-            </div>
+            {[
+              { title: 'Hosts', links: [['/', 'How It Works'], ['/host/register', 'Get Started'], ['/host', 'Dashboard']] },
+              { title: 'Stockers', links: [['/stocker', 'Become a Stocker'], ['/stocker', 'Dashboard']] },
+              { title: 'Product', links: [['/extension', 'Planner Extension'], ['/auth/signin', 'Sign In'], ['/terms', 'Terms'], ['/privacy', 'Privacy']] },
+            ].map(({ title, links }) => (
+              <div key={title}>
+                <div className="text-white/40 text-xs font-bold uppercase tracking-widest mb-4">{title}</div>
+                <ul className="space-y-2.5">
+                  {links.map(([href, label]) => (
+                    <li key={label}><Link href={href} className="text-white/50 text-sm hover:text-white transition-colors">{label}</Link></li>
+                  ))}
+                </ul>
+              </div>
+            ))}
           </div>
-
-          {/* Bottom Section */}
-          <div className="border-t border-gray-800 mt-12 pt-8">
-            <div className="flex flex-col md:flex-row justify-between items-center">
-              <div className="text-gray-400 text-sm mb-4 md:mb-0">
-                © 2025 StayStocked. All rights reserved.
-              </div>
-              <div className="flex space-x-6 text-sm">
-                <a href="#" className="text-gray-400 hover:text-green-400 transition-colors">
-                  Privacy
-                </a>
-                <a href="#" className="text-gray-400 hover:text-green-400 transition-colors">
-                  Terms
-                </a>
-                <a href="#" className="text-gray-400 hover:text-green-400 transition-colors">
-                  Cookie Policy
-                </a>
-                <a href="#" className="text-gray-400 hover:text-green-400 transition-colors">
-                  Accessibility
-                </a>
-              </div>
+          <div className="pt-8 flex items-center justify-between">
+            <p className="text-white/25 text-xs">2026 StayStocked. All rights reserved.</p>
+            <div className="flex gap-6">
+              {[['Privacy', '/privacy'], ['Terms', '/terms']].map(([label, href]) => (
+                <Link key={label} href={href} className="text-white/25 text-xs hover:text-white/50 transition-colors">{label}</Link>
+              ))}
             </div>
           </div>
         </div>
       </footer>
-    </div>
-  );
+
+    </main>
+  )
 }
