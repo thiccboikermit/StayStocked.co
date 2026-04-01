@@ -30,18 +30,7 @@ function SignInForm() {
       
       if (user) {
         setAuthToken(user);
-        // If there's a specific callbackUrl use it, otherwise route by role
-        if (callbackUrl && callbackUrl !== '/') {
-          router.push(callbackUrl);
-        } else if (user.role === 'host') {
-          router.push('/host/dashboard');
-        } else if (user.role === 'stocker') {
-          router.push('/stocker');
-        } else if (user.role === 'admin') {
-          router.push('/admin');
-        } else {
-          router.push('/');
-        }
+        router.push(callbackUrl);
       } else {
         setError('Invalid email or password');
       }

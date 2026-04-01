@@ -48,7 +48,7 @@ export default function HostRegisterPage() {
       
       if (user) {
         setAuthToken(user);
-        router.push('/host/add-property'); // New hosts go straight to adding their first property
+        router.push('/host'); // Redirect to host dashboard
       }
     } catch (error) {
       if (error instanceof Error) {
